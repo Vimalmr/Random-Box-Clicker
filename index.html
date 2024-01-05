@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Box Game</title>
+    <style>
+        .container{
+            width: 95vw;
+            height: 85vh;
+            padding: 10px;
+            background-color: rgb(255,191,211);
+            margin: auto;
+            margin-top: 4vh;
+            border-radius: 5px; 
+            display: grid;
+            grid-template-columns: auto auto auto;
+        }
+
+        .box{
+            border-radius: 5px;
+            width: auto;
+            height: auto;
+            margin: 10px;
+            background-color: rgb(255,0,101);
+            padding: 20px;
+            font-size: 30px;
+            text-align: center;
+        }
+
+        .grid-item {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.8);
+        }
+
+        #time{
+            color: green;
+        }
+
+        #count{
+            color: darkblue;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">Timer - [<span id="time">START</span>] : Count - [<span id="count">0</span>] </h2>
+    <div class="container">
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+    </div>
+
+    <script>
+    (function () {
+        var boxes = document.querySelectorAll('.box');
+        var timerOn = false;
+        var count = 0;
+        
+        function showRandomBox() {
+            var randomIndex = Math.floor(Math.random() * boxes.length);
+            for (var i = 0; i < boxes.length; i++) {
+                if (i === randomIndex) {
+                    boxes[i].style.visibility = 'visible';
+                } else {
+                    boxes[i].style.visibility = 'hidden';
+                }
+            }
+        }
+        
+        document.getElementById('time').addEventListener('click', function () {
+            console.log("Click event registered!"); 
+            if (!timerOn) {
+                timerOn = true;
+                var t = 1;
+                var animation = setInterval(function () {
+                    if (t <= 60) {
+                        showRandomBox();
+                        document.getElementById('time').textContent = t;
+                        t++;
+                    } else {
+                        document.getElementById('time').textContent = "GameOver";
+                        clearInterval(animation);
+                        timerOn = false;
+                        for (var i = 0; i < boxes.length; i++) {
+                            boxes[i].style.visibility = 'visible';
+                        }
+                    }
+                }, 1000);
+            }
+        });
+
+        for (var i = 0; i < boxes.length; i++) {
+            boxes[i].addEventListener('click', function () {
+            if (timerOn && this.style.visibility === 'visible') {
+                count++;
+                document.getElementById('count').textContent = count;
+                clearInterval(animation);
+                timerOn = false;
+            }
+            });
+        }
+    })();
+        </script>
+</body>
+</html>
